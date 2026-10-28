@@ -11,25 +11,6 @@ All copies are kept in `my-specs/`. Both layouts always have the same rules (sam
 word-for-word the same rule text); the final specs (v10) are in `milestone-1-specs/single-file/`
 and `milestone-1-specs/staged/`.
 
-| Version | Spec A | Spec B | What changed and why |
-| --- | --- | --- | --- |
-| v1 | 38 rules | 42 rules | First single-file specs and checks. |
-| v2 | 38 | 42 | Rule 6.3 made stricter (the agent hard-coded read counts to pass it); README: never hard-code a value to pass a check; checks no longer hang when they start the cluster. Staged layout created from v2. |
-| v3 | 42 | 44 | A: 0.3 (kill node 8001, others keep serving and it comes back), 7.8 `max_uses: 2`, 7.9 `invited_username`, 7.10 admins invite. B: 2.8 default limit 50, 5.7 archive events, 6.2 replies are not unread. README: how to restart the cluster by PID, use leftover time to test; staged README: read one spec file at a time. |
-| v4 | 42 | 50 | B: 1.11 name length / `description`, 1.12 owner-only unarchive, 3.10 paging on replies/search/pins, 5.8 30 concurrent posts across 3 nodes give dense event ids, 7.1 `401` and 7.2 `404` on Spec B routes. |
-| v5 | 42 | 51 | B: 6.6 read counts stay right when joins and topic changes sit between messages (the agent offset its counts to fit the old test). |
-| v6 | 42 | 51 | B: 5.2 also checks that `subscribe` does not replay old events; the read-state test only uses message events, so a WebSocket bug no longer shows up as a read-state failure. |
-| v7 | 44 | 54 | After the v6 finals passed every rule, I probed both final apps on 23 `COMPONENTS.md` behaviors my checks did not test. Five gaps became rules. A: 7.11 used-up invitations are not listed, 7.12 targeted invitations are single-use even with `max_uses`. B: 1.13 the workspace owner can set the topic of a channel they are not in, 4.6 a workspace member who is not in the channel is still mentioned, 5.9 `message.created` frames carry the message under `"message"`. |
-| v8 | 44 | 56 | From the v7 runs. B: 2.9 REST message objects do not carry `event_id`, 3.11 a reply, topic change or pin in an archived channel returns `423` (the v7 apps returned `200` for topic and pin). A: rule 0.3 (kill a node) now runs first in `check_roles.sh` and `check_roles_1.sh`/`_all.sh`, so a slow environment can no longer skip it (Approach 3 Run 2). |
-| v9 | 44 | 56 | B: 6.2 also checks that a user's own messages never count as unread for that user (the v8 app counted them). |
-| v10 (final) | 51 | 66 | Each run so far had found one more gap, so instead of adding one rule per run I went through `COMPONENTS.md` line by line, wrote a second probe (17 items) for every line no rule tested, and turned each real gap into a rule. A: 0.2 bad WebSocket token on all three nodes, 1.7 `display_name` and full UserObj, unknown user login `401`, 2.6 workspace fields, unknown slug `404`, bad slug `400`, 4.6 unknown role `400` and unknown/non-member user `404`, 4.7 admin promotes and owner demotes, 6.4 owner and admin rename the workspace, 7.13 member revoke `403`, unknown code `404`, accept with no token `401`, 8.4 `owner_id` changes after a transfer and the old owner loses owner rights. B: 1.14 topic kept on create, 1.15 members list after leave, 2.10 non-member of a private channel gets `403` on its messages, 2.11 non-workspace user gets `403` on posting, 2.12 full message object and `limit=abc` `400`, 3.12 unknown `parent_id` `404`, 3.13 search cursor works on another node, 4.7 punctuation ends a mention, 5.10 private channel frames do not reach non-members, 5.11 `message.reply` frames carry the message and `parent_id`. Fixed stale counts in the staged step files. The reference server passes 117/117, and every earlier app fails only on real gaps (no false failures). |
-| | | | Left out on purpose: `?offset=`/`?page=` (COMPONENTS.md only says they are not supported; apps ignore them), `resume.gap` (only needed when old events are dropped, which no app does), the optional `include_archived=true` alias, and message edit/delete (no route in Component B). |
-
-`/app` starts empty in every run, so in the B step of Approaches 2 and 4 the agent rebuilt the
-frozen Spec A and then built Spec B in the same run. That makes the B step the same setup as
-Approaches 1 and 3, so each such run is listed once (under Approach 1 or 3) and referenced from
-Approach 2 or 4.
-
 ## Approach 1
 
 Single-file layout, Spec A and Spec B together.
@@ -323,24 +304,26 @@ spec.
 
 On the final spec (v10) both graded approaches reached every rule: 51/51 for Spec A and 66/66 for
 Spec B in both layouts, the apps passed all 40 extra behaviors I probed, and none hard-coded
-anything. The difference was in how they got there. The staged layout made the agent work in order: once the
+anything. The difference was in how they got there. 
+
+The staged layout made the agent work in order: once the
 README said to read one spec file at a time, it built and checked each step before moving on, and
-failures stayed small and local (the v6 staged run took 5 minutes and $0.38). Its weak point was
-the full checks: they run more rules in one command, so in a slow environment they hit time
-limits, and the v7 staged run spent 22 minutes and $1.18 partly chasing a rule my check skipped
+failures stayed small and local (the v6 staged run took 5 minutes and $0.38). 
+
+Its weak point was the full checks: they run more rules in one command, so in a slow environment they hit time
+limits, and the v7 staged run spent 22 minutes chasing a rule my check skipped
 for time. After v8 ran that rule first and v10 fixed the stale counts in the step files, the
-final staged run took 70 steps and $0.87 with no such problem. The single-file runs needed more
-spec iteration and were where the agent took shortcuts: it hard-coded read counts (B v1), fitted
-its count to my test (B v4) and spent about 20 steps on a misleading failure (B v5); each of those
+final staged run took 70 steps and $0.87 with no such problem. 
+
+The single-file runs needed more spec iteration and were where the agent took shortcuts: it hard-coded read counts (B v1), fitted
+its count to my test (B v4) and spent lot of steps on a misleading failure (B v5); each of those
 runs led to a better rule or a clearer failure message, and the final single-file run was clean
-in 8 minutes and $0.51 (43 steps, fewer than the staged run). The biggest lesson from v7 to v10
-was that adding one rule for each gap a run showed did not converge: three runs in a row passed
+in 8 minutes. 
+
+The biggest lesson from v7 to v10 was that adding one rule for each gap a run showed did not converge: three runs in a row passed
 every rule and still had a new gap. Going through `COMPONENTS.md` line by line once (v10) closed
-them all. Building one
-component at a time (Approaches 2 and 4) was mainly useful for finding spec problems cheaply, since
+them all. 
+
+Building onecomponent at a time (Approaches 2 and 4) was mainly useful for finding spec problems cheaply, since
 an A-only run takes 2 to 5 minutes and $0.04 to $0.27; because `/app` starts empty, its B step is
-the same as building both together. In every approach the agent submitted with about 45 minutes
-left once my checks passed, so the checks, not the time limit, decided how much was built
-correctly: adding rules (and probing the finished apps for behavior the rules missed) helped far
-more than telling the agent to keep testing. All 16 runs together cost about $5.83 (no run over
-$1.18).
+the same as building both together. I
