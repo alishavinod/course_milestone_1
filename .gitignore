@@ -26,4 +26,5 @@ tasks/slack-clone-course/course-staff-files/final_task/environment/spec
 tasks/slack-clone-course/student-files/spec
 
 # Local API keys
-dev.envmini-swe-agent-src/
+dev.env
+mini-swe-agent-src/
