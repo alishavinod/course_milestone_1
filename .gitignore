@@ -24,3 +24,6 @@ build/
 # Generated spec copies for slack-clone-course (moved from tasks/slack-clone-course/.gitignore)
 tasks/slack-clone-course/course-staff-files/final_task/environment/spec
 tasks/slack-clone-course/student-files/spec
+
+# Local API keys
+dev.env

@@ -1,0 +1,109 @@
+{
+    "id": "535e2642-7769-4b3a-a8b9-f34b4b0df96b",
+    "task_name": "abundant/slack-clone",
+    "trial_name": "final_task__XrL3vQH",
+    "trial_uri": "file:///Users/alishavinod/course_milestone_1/tasks/slack-clone-course/jobs/2026-10-25__02-12-37/final_task__XrL3vQH",
+    "task_id": {
+        "path": "tasks/slack-clone-course/course-staff-files/final_task"
+    },
+    "source": null,
+    "task_checksum": "ab7fbe880513d3c933a43f4aa3a84c3577cd1af77f4177979434a6d2d7bb6321",
+    "config": {
+        "task": {
+            "path": "tasks/slack-clone-course/course-staff-files/final_task",
+            "git_url": null,
+            "git_commit_id": null,
+            "name": null,
+            "ref": null,
+            "overwrite": false,
+            "download_dir": null,
+            "source": null
+        },
+        "trial_name": "final_task__XrL3vQH",
+        "trials_dir": "/Users/alishavinod/course_milestone_1/tasks/slack-clone-course/jobs/2026-10-25__02-12-37",
+        "install_only": false,
+        "timeout_multiplier": 1.0,
+        "agent_timeout_multiplier": null,
+        "verifier_timeout_multiplier": null,
+        "agent_setup_timeout_multiplier": null,
+        "environment_build_timeout_multiplier": null,
+        "agent": {
+            "name": "mini_swe_agent_local:MiniSweAgentLocal",
+            "import_path": null,
+            "model_name": "openai/gpt-5.6-luna",
+            "n_concurrent": null,
+            "concurrency_group": null,
+            "skills": [],
+            "override_timeout_sec": null,
+            "override_setup_timeout_sec": null,
+            "max_timeout_sec": null,
+            "resume_trajectory": false,
+            "load_trajectory": null,
+            "extra_allowed_hosts": [],
+            "kwargs": {
+                "config_file": "/Users/alishavinod/course_milestone_1/tasks/slack-clone-course/course-staff-files/final_task/agent_llm_config/mswea-openai-gpt-5.6-luna-no-reasoning.yaml",
+                "cost_limit": 3
+            },
+            "mcp_servers": []
+        },
+        "environment": {
+            "type": "docker",
+            "import_path": null,
+            "force_build": false,
+            "delete": true,
+            "cpu_enforcement_policy": "auto",
+            "memory_enforcement_policy": "auto",
+            "override_cpus": null,
+            "override_memory_mb": null,
+            "override_storage_mb": null,
+            "override_gpus": null,
+            "override_tpu": null,
+            "mounts": null,
+            "extra_docker_compose": [],
+            "kwargs": {},
+            "extra_allowed_hosts": []
+        },
+        "verifier": {
+            "override_timeout_sec": null,
+            "max_timeout_sec": null,
+            "disable": true
+        },
+        "artifacts": [],
+        "extra_instruction_paths": [],
+        "job_id": "bf8aa393-fe51-469d-ac42-e468124807bc"
+    },
+    "agent_info": {
+        "name": "mini-swe-agent-local",
+        "version": "2.4.6",
+        "model_info": {
+            "name": "gpt-5.6-luna",
+            "provider": "openai"
+        }
+    },
+    "agent_result": {
+        "n_input_tokens": 393352,
+        "n_cache_tokens": 369841,
+        "n_output_tokens": 8393,
+        "cost_usd": 0.0976162,
+        "rollout_details": null,
+        "metadata": null
+    },
+    "verifier_result": null,
+    "exception_info": null,
+    "started_at": "2026-10-25T06:12:38.957568Z",
+    "finished_at": "2026-10-25T06:15:09.155684Z",
+    "environment_setup": {
+        "started_at": "2026-10-25T06:12:39.020016Z",
+        "finished_at": "2026-10-25T06:12:56.663486Z"
+    },
+    "agent_setup": {
+        "started_at": "2026-10-25T06:12:56.663580Z",
+        "finished_at": "2026-10-25T06:13:06.994303Z"
+    },
+    "agent_execution": {
+        "started_at": "2026-10-25T06:13:06.994834Z",
+        "finished_at": "2026-10-25T06:15:05.402975Z"
+    },
+    "verifier": null,
+    "step_results": null
+}
